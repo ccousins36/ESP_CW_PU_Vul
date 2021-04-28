@@ -1,0 +1,251 @@
+! inlist_nova
+
+&star_job  ! The controls namelist loaded when the simulation is executed
+
+      show_log_description_at_start = .false.
+      
+!-------------------------------------------------------------------
+! Here we tell MESA to load in the previously created WD star model
+! '1Msun_CO_WD.mod' to use for modelling. If changing the starting  
+! model, change the 'initial_mass' parameter in the &controls 
+! namelist to your new models mass.
+!-------------------------------------------------------------------
+      load_saved_model = .true.
+      saved_model_name = '0.6Msun_CO_WD.mod'
+
+
+!-------------------------------------------------------------------
+! When the simulation terminates, the final form of the star 
+! you modelled will be saved as 'final.mod'.
+!-------------------------------------------------------------------
+      save_model_when_terminate = .true.
+      save_model_filename = 'final.mod'
+
+
+!-------------------------------------------------------------------
+! When the simulation terminates, a final profile of the 
+! simulation will be saved as 'final_profile.data'.
+!-------------------------------------------------------------------
+      write_profile_when_terminate = .true.
+      filename_for_profile_when_terminate = 'final_profile.data'
+
+
+!-------------------------------------------------------------------
+! The nuclear reaction network for MESA to use in the simulation. 
+! 'cno_extras_o18_to_mg26_plus_fe56.net' is relatively short and 
+! therefore faster for running simulations.
+!-------------------------------------------------------------------
+      change_initial_net = .true.
+      new_net_name = 'custom_network.net'
+
+
+!-------------------------------------------------------------------
+! This turns on the hydrodynamics option in mesa by allowing the 
+! cells to have velocity. 
+!-------------------------------------------------------------------
+      change_v_flag = .true.
+      new_v_flag = .true. 
+
+
+!-------------------------------------------------------------------
+! This resets the age and model_number of the loaded in star to 0
+! once a new simulation is executed. 
+!-------------------------------------------------------------------
+      set_initial_age = .true.
+      initial_age = 0
+      set_initial_model_number = .true.
+      initial_model_number = 0
+
+
+!-------------------------------------------------------------------
+! PGstar creates real-time plots of the simulation on-screen.
+! PGSTAR has an enormous number of features and controls for you
+! to explore, consult the general-purpose helpsheet for further info.
+!-------------------------------------------------------------------
+       pgstar_flag = .true.
+
+
+!-------------------------------------------------------------------
+! This option could be used to relax the starting accretion over 
+! time, uncomment to experiment with.  
+!-------------------------------------------------------------------
+!       relax_mass_change = .true.
+!       relax_initial_mass_change = .true.
+!       relax_mass_change_min_steps = 10
+!       relax_mass_change_max_yrs_dt = 100
+!       relax_mass_change_init_mdot = 1e-10
+!       relax_mass_change_final_mdot = 5d-9
+!-------------------------------------------------------------------
+
+
+!-------------------------------------------------------------------
+! Important and necessary inlist controls, changing these may     !-
+! cause simulation crashes and problems. Change at your own risk. !-
+!-------------------------------------------------------------------
+      set_tau_factor = .true.                                     !-
+      set_to_this_tau_factor = 30                                !-
+!-------------------------------------------------------------------
+
+
+/ ! end of star_job namelist
+
+
+&kap  ! The opacity controls namelist 
+
+!-------------------------------------------------------------------
+! Opacity controls, Zbase is the initial metallicity of the neutron
+! star (same concept as initial_z).
+!-------------------------------------------------------------------
+      use_Type2_opacities = .true.
+      Zbase = 0.02d0
+
+/  ! end of kap namelist
+
+
+&controls  ! The controls namelist for once the simulation starts evolving in time 
+
+!-------------------------------------------------------------------
+! This is the target value for relative variation in the structure 
+! from one timestep to the next. Therefore, the smaller this parameter 
+! is, the smaller the error inbetween timsteps, and the more accurate 
+! your overall simulation. However, greater accuracy causes the 
+! simulation to be slower. 
+!-------------------------------------------------------------------
+      varcontrol_target = 1d-4
+
+
+!-------------------------------------------------------------------
+! This controls the number of grid points in the simulation, more 
+! grid points increases the resolution of the simulation, increasing 
+! accuracy. However more grid points also cause the simulation to
+! be slower. Decrease this parameter for more grid points. 
+!-------------------------------------------------------------------
+      mesh_delta_coeff = 1.5
+
+
+!-------------------------------------------------------------------
+! Initial values to be set for the simulation. initial_z is the 
+! metallicity of the neutron star.
+!-------------------------------------------------------------------
+      initial_mass = 0.6
+      initial_z = 0.02d0
+
+
+
+!-------------------------------------------------------------------
+! Material accretion rate and composition
+!-------------------------------------------------------------------
+      mass_change = 5d-9                 ! rate of material accretion (Msun/year)      
+      accrete_same_as_surface = .false. 
+      accretion_h1 = 0.7                 ! Accretion mass fraction of Hydrogen-1 (Estimated Nomoto 2007)
+      accretion_h2 = 0.0                 ! Accretion mass fraction of Hydrogen-2 (X = h1+h2)
+      accretion_he3 = 0.292910D-04       ! Accretion mass fraction of Helium-3
+      accretion_he4 = 0.279971           ! Accretion mass fraction of Helium-4 (Y = he3+he4) (Estimated Nomoto 2007)
+      accretion_zfracs = 4               ! Accretion mass fraction of metals, Z, calculated Z = 1-X-Y
+                                         ! (4 is one of the identifiers for different Z fractions from  
+                                         ! chem_def, 4 = Lodders 2003 Z fractions,
+                                         ! found in /opt/MESA15140/mesa-r15140/data/chem_data/lodders03.data)
+
+
+!-------------------------------------------------------------------
+! Mass loss through super-Eddington wind 
+!------------------------------------------------------------------- 
+! For super eddington wind we use Ledd averaged by mass to optical 
+! depth tau = ``surf_avg_tau``, where by default surf_avg_tau = 100
+! in the controls.defaults.
+      super_eddington_scaling_factor = 1
+! Parameter for mass loss driven by super Eddington luminosity.
+! Divide L by this factor when computing super Eddington wind,
+! e.g., if this is 2, then only get wind when L/2 > Ledd.     
+      super_eddington_wind_Ledd_factor = 1
+
+
+!-------------------------------------------------------------------
+! Mixing length theory (MLT) of convection controls. 
+!-------------------------------------------------------------------
+      MLT_option = 'Cox'
+      mixing_length_alpha = 2.0 
+      use_Ledoux_criterion = .true.
+      alpha_semiconvection = 1d-3
+      thermohaline_coeff = 1d3         
+
+  
+!-------------------------------------------------------------------
+! Output frequency for the history.data file, profiles and photos
+!-------------------------------------------------------------------
+      history_interval = 1
+      profile_interval = 100
+      photo_interval = 100
+      photo_digits = 5
+      terminal_interval = 1
+      write_header_frequency = 10          
+
+
+!-------------------------------------------------------------------
+! CONTROLS COMPOSITION GRADIENTS FOR THESE 2 SPECIES
+! AND MAKES SURES THEY ARE NOT TOO LARGE
+!-------------------------------------------------------------------
+      ! xa_function_species(1) = 'h1'  ! name of nuclide as defined in chem_def
+      ! xa_function_weight(1) = 20
+      ! xa_function_param(1) = 1d-6
+      ! xa_function_species(2) = 'he4'  ! name of nuclide as defined in chem_def
+      ! xa_function_weight(2) = 20
+      ! xa_function_param(2) = 1d-2
+!-------------------------------------------------------------------
+
+
+!-------------------------------------------------------------------
+! Important and necessary inlist controls, changing these may     !-
+! cause simulation crashes and problems. Change at your own risk. !-
+!-------------------------------------------------------------------
+      min_timestep_limit = 1d-99                                  !-
+      gamma_center_limit = 1d99                                   !-
+                                                                  !-
+      use_dedt_form_of_energy_eqn = .false.                       !-
+      always_use_eps_grav_form_of_energy_eqn = .true.             !-
+      limit_for_rel_error_in_energy_conservation = 1d-5           !-
+      hard_limit_for_rel_error_in_energy_conservation = 1d-3      !-
+      warning_limit_for_max_residual = 1d99                       !-
+      convergence_ignore_equL_residuals = .true.                  !-
+                                                                  !-
+      atm_option = 'T_tau'                                        !-
+      atm_T_tau_relation = 'Eddington'                            !-
+      atm_T_tau_opacity = 'fixed'                                 !-
+      Pextra_factor = 75                                          !-
+                                                                  !-
+      max_allowed_nz = 20000                                      !-
+      screening_mode = 'extended'                                 !-
+!-------------------------------------------------------------------
+
+!-------------------------------------------------------------------
+! This is a custom made routine to track the ejected yields of the 
+! species in your nuclear net. Two ways are provided for you to 
+! track the ejected yields, read below for details.
+!
+! NOTE: Only one of the controls can be set to true at one time.
+!       Either both must be false, or only one can be true.
+!
+! ----- x_logical_ctrl(1) ----- 
+! When this control is set to true, the ejected yields of the species
+! in your net will be printed to the history.data file FOR THAT 
+! TIMESTEP ONLY. This means that each line in the history.data file 
+! represents the ejected yields that single step only, NOT the mean 
+! yield of that element for the whole burst.
+!
+! ----- x_logical_ctrl(2) ----- 
+! When this control is set to true, the mean ejected yields of the species
+! in your net will be printed to the history.data file FOR the WHOLE 
+! BURST. This means that each line in the history.data file represents
+! the mean ejected yields of the species for that burst so far.
+! The mean ejected yield for the whole burst can be seen by looking 
+! at the ejected yield at the last step of ejection for the burst. 
+!
+! For either option, the ejected yields will be represented in the 
+! history.data file by the column names ejected_<species names> for
+! the species in your net. For example, the column names can be:
+! ejected_h1, ejected_c12, ejected_f17, and so on. 
+!-------------------------------------------------------------------
+      x_logical_ctrl(1) = .false.
+      x_logical_ctrl(2) = .false.
+!-------------------------------------------------------------------
+/ ! end of controls namelist
