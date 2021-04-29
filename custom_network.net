@@ -1,0 +1,59 @@
+
+        include 'basic.net'
+         
+        include 'add_pp_extras'
+      
+        include 'add_cno_extras'
+      
+        include 'add_o18_and_ne22'
+	!
+	!=================================================
+	!ABOVE INCLUDES PROVIDE "pp_cno_extras_o18_ne22"
+	!FROM THIS, WE CAN PRODUCE:
+	! H-1,2
+	! He-3,4
+	! Li-7
+	! Be-8
+	! C-12,13
+	! N-13,14,15
+	! O-14,15,16,17,18
+	! F-17,18,19
+	! Ne-18,19,20,22
+	! Mg-22,24
+	!
+	!BASED ON IZZARD'S WK5 L11 SLIDE 13
+	!OF THE PEAK TEMP. OUTBURST OF A 1.15MSun CO WD,
+	!WE INCLUDE THESE REACTIONS:
+	! Ne-22(p  ,  g)Na-23
+	! Na-23(p  ,  a)Ne-20
+	! Na-23(p  ,  g)Mg-24
+	! Mg-24(p  ,  g)Al-25
+	! Al-25(B^+ v_e)Mg-25
+	! Mg-25(p  ,  g)Al-26
+	! Al-26(B^+ v_e)Mg-26
+	!
+	!SO, WE NEED TO ADD IN:
+	! Na-23
+	! Mg-25,26
+	! Al-25,26
+	!=================================================
+	!
+	add_isos
+	(
+		na23
+		mg25
+		mg26
+		al25
+		al26
+	)
+	
+	add_reaction
+	(
+		r_ne22_pg_na23
+		r_na23_pa_ne20
+		r_na23_pg_mg24
+		r_mg24_pg_al25
+		r_al25_wk_mg25
+		r_mg25_pg_al26
+		r_al26_wk_mg26
+	)
