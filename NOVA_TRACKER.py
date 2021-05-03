@@ -162,6 +162,7 @@ fit=f(all_arr_x)
 plt.plot(all_arr_x,fit, linestyle="--", c="black")
 
 ############################################################
+
 flag = True
 M_min = min(Vmagnitudes)
 M_length = len(np.asarray(Vmagnitudes))
@@ -258,17 +259,17 @@ for i in range(L_length):
 	ejected_H2_max   = ejected_H2[eject_pos]
 	ejected_He3_max  = ejected_He3[eject_pos]
         ejected_He4_max  = ejected_He4[eject_pos]
-	ejected_B8_max   =  ejected_B8[eject_pos]
-	ejected_C12_max  =  ejected_C12[eject_pos]
-	ejected_N13_max  =  ejected_N13[eject_pos]
-	ejected_N14_max  =  ejected_N14[eject_pos]
-	ejected_O14_max  =  ejected_O14[eject_pos]
-	ejected_O15_max  =  ejected_O15[eject_pos]
-	ejected_O16_max  =  ejected_O16[eject_pos]
-	ejected_O18_max  =  ejected_O18[eject_pos]
-	ejected_F17_max  =  ejected_F17[eject_pos]
-	ejected_F18_max  =  ejected_F18[eject_pos]
-	ejected_F19_max  =  ejected_F19[eject_pos]
+	ejected_B8_max   = ejected_B8[eject_pos]
+	ejected_C12_max  = ejected_C12[eject_pos]
+	ejected_N13_max  = ejected_N13[eject_pos]
+	ejected_N14_max  = ejected_N14[eject_pos]
+	ejected_O14_max  = ejected_O14[eject_pos]
+	ejected_O15_max  = ejected_O15[eject_pos]
+	ejected_O16_max  = ejected_O16[eject_pos]
+	ejected_O18_max  = ejected_O18[eject_pos]
+	ejected_F17_max  = ejected_F17[eject_pos]
+	ejected_F18_max  = ejected_F18[eject_pos]
+	ejected_F19_max  = ejected_F19[eject_pos]
 	ejected_Ne18_max = ejected_Ne18[eject_pos]
 	ejected_Ne19_max = ejected_Ne19[eject_pos]
 	ejected_Ne20_max = ejected_Ne20[eject_pos]
